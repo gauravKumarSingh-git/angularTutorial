@@ -16,5 +16,5 @@ export class AppComponent {
     // this.clicks.push(this.counter++);
     this.clicks.push(new Date());
   }
-
+  
 }
