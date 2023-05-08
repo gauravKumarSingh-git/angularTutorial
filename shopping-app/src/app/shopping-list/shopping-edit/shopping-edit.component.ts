@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -7,4 +8,17 @@ import { Component } from '@angular/core';
 })
 export class ShoppingEditComponent {
 
+  @Output() ingredientEmitter = new EventEmitter<Ingredient>();
+
+  @ViewChild('nameInput') nameInput: ElementRef;
+  @ViewChild('amountInput') amountInput: ElementRef;
+
+  submitForm(){
+    this.ingredientEmitter.emit(
+      new Ingredient(
+        this.nameInput.nativeElement.value, 
+        this.amountInput.nativeElement.value
+      )
+    );
+  }
 }
