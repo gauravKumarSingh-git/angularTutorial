@@ -1,5 +1,5 @@
-<a href="#" class="list-group-item clearfix" (click)="onRecepieClick()">
-  <div class="pull-left">
+<a href="#" class="list-group-item clearfix " (click)="onRecepieClick()">
+  <div class="pull-left col-xs-9">
     <h4 class="list-group-item-heading">{{ recepie.name }}</h4>
     <p class="list-group-item-text">{{ recepie.description }}</p>
   </div>
@@ -8,7 +8,8 @@
       [src]="recepie.imagePath"
       alt="{{ recepie.name }}"
       class="img-responsive"
-      style="max-height: 50px"
+      height="50px"
+      width="50px"
     />
   </span>
 </a>
