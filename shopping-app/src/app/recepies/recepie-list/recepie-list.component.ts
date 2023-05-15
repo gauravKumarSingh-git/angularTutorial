@@ -1,18 +1,24 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Recepie } from '../recepie.model';
+import { RecepieService } from '../recepie.service';
 
 @Component({
   selector: 'app-recepie-list',
   templateUrl: './recepie-list.component.html',
   styleUrls: ['./recepie-list.component.css']
 })
-export class RecepieListComponent {
+export class RecepieListComponent implements OnInit {
   @Output() recepieWasSelected = new EventEmitter<Recepie>();
 
-  recepies: Recepie[] = [
-    new Recepie('A Test Recepie', 'This is simply a test', 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505'),
-    new Recepie('Another Test Recepie', 'This is simply a test', 'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=556,505')
-  ];
+  recepies: Recepie[];
+
+  constructor(private recepieService: RecepieService) {
+
+  }
+
+  ngOnInit(): void {
+    this.recepies = this.recepieService.getRecepies();
+  }
 
   onRecepieSelected(recepie: Recepie){
     this.recepieWasSelected.emit(recepie);
