@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Recepie } from '../../recepie.model';
+import { RecepieService } from '../../recepie.service';
 
 @Component({
   selector: 'app-recepie-item',
@@ -9,9 +10,9 @@ import { Recepie } from '../../recepie.model';
 export class RecepieItemComponent {
   @Input() recepie: Recepie;
 
-  @Output() recepieSelected = new EventEmitter<void>()
+  constructor(private recepieService: RecepieService){}
 
   onRecepieClick(){
-    this.recepieSelected.emit();
+    this.recepieService.recepieSelected.emit(this.recepie);
   }
 }
