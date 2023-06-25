@@ -37,5 +37,9 @@ export class RecepieService {
     return this.recepies.slice();
   }
 
+  getRecepie(index: number){
+    return this.recepies[index];
+  }
+
   constructor() { }
 }

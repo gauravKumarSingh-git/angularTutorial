@@ -1,18 +1,34 @@
-import { Component, Input } from '@angular/core';
-import { Ingredient } from 'src/app/shared/ingredient.model';
+import { Component, OnInit  } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ShoppingListService } from 'src/app/shopping-list/shopping-list.service';
 import { Recepie } from '../recepie.model';
+import { RecepieService } from '../recepie.service';
 
 @Component({
   selector: 'app-recepie-detail',
   templateUrl: './recepie-detail.component.html',
   styleUrls: ['./recepie-detail.component.css']
 })
-export class RecepieDetailComponent {
+export class RecepieDetailComponent implements OnInit{
 
-  @Input() recepie: Recepie;
+  recepie: Recepie;
+  id: number;
 
-  constructor(private shoppingListService: ShoppingListService) {}
+  constructor(
+    private shoppingListService: ShoppingListService, 
+    private recepieService: RecepieService,
+    private route: ActivatedRoute
+    ) {}
+
+  
+  ngOnInit(): void {
+    const id = this.route.params.subscribe(
+      (params: Params) => {
+        this.id = +params['id'];
+        this.recepie = this.recepieService.getRecepie(this.id);
+      }
+    )
+  }
 
   addToShoppingList(){
     // for(let i = 0 ; i< this.recepie.ingredients.length ; i++){
