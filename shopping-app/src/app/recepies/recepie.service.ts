@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Ingredient } from '../shared/ingredient.model';
 import { Recepie } from './recepie.model';
 
@@ -7,7 +8,7 @@ import { Recepie } from './recepie.model';
 })
 export class RecepieService {
 
-  recepieSelected = new EventEmitter<Recepie>();
+  recepieSelected = new Subject<Recepie>();
 
   private recepies: Recepie[] = [
     new Recepie(

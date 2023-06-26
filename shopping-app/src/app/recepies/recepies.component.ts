@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Recepie } from './recepie.model';
-import { RecepieService } from './recepie.service';
 
 @Component({
   selector: 'app-recepies',
@@ -8,16 +6,10 @@ import { RecepieService } from './recepie.service';
   styleUrls: ['./recepies.component.css']
 })
 export class RecepiesComponent implements OnInit {
-  selectedRecepie: Recepie;
 
-  constructor(private recepieService: RecepieService){}
+  constructor(){}
   
   ngOnInit(): void {
-      this.recepieService.recepieSelected
-        .subscribe(
-          (recepie: Recepie) => {
-            this.selectedRecepie = recepie;
-          }
-        )
+     
   }
 }
