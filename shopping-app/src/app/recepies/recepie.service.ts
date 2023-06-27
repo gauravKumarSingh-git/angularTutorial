@@ -8,8 +8,6 @@ import { Recepie } from './recepie.model';
 })
 export class RecepieService {
 
-  recepieSelected = new Subject<Recepie>();
-
   private recepies: Recepie[] = [
     new Recepie(
       'Litti Chokha', 
