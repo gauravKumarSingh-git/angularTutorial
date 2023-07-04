@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { map } from 'rxjs';
+import { Post } from './post.model';
 
 @Component({
   selector: 'app-root',
@@ -36,7 +38,18 @@ export class AppComponent {
 
   private fetchPosts() {
     this.http
-      .get('https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json')
+      .get<{[key: string]: Post}>('https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json')
+      .pipe(
+        map((responseData: { [key: string]: Post}) => {
+          const postArray: Post[] = [];
+          for (let key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              postArray.push({...responseData[key], id: key});
+            }
+          }
+          return postArray;
+        })
+      )
       .subscribe((posts) => console.log(posts));
   }
 }
