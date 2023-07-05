@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Subject, throwError } from 'rxjs';
 import { Post } from './post.model';
@@ -18,17 +18,24 @@ export class PostsService {
         'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
         postData
       )
-      .subscribe((responseData) => {
-        console.log(responseData);
-      }, error => {
-        this.error.next(error.message);
-      });
+      .subscribe(
+        (responseData) => {
+          console.log(responseData);
+        },
+        (error) => {
+          this.error.next(error.message);
+        }
+      );
   }
 
   fetchPosts() {
     return this.http
       .get<{ [key: string]: Post }>(
-        'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json'
+        'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
+        {
+          headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
+          params: new HttpParams().set('print', 'petty')
+        }
       )
       .pipe(
         map((responseData: { [key: string]: Post }) => {
@@ -48,6 +55,8 @@ export class PostsService {
   }
 
   clearPosts() {
-    return  this.http.delete('https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json');
+    return this.http.delete(
+      'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json'
+    );
   }
 }
