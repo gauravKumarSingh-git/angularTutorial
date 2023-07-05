@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { map, Subscription } from 'rxjs';
 import { Post } from './post.model';
 import { PostsService } from './posts.service';
 
@@ -9,15 +9,20 @@ import { PostsService } from './posts.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy{
   title = 'http-start';
   loadedPosts: Post[] = [];
   isFetching = false;
   error = null;
+  private errorSub: Subscription | undefined;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
+    this.errorSub = this.postsService.error.subscribe(errorMessage => {
+      this.error = <any> errorMessage;
+    })
+
     this.isFetching = true;
     this.postsService.fetchPosts().subscribe(posts => {
       this.isFetching = false;
@@ -38,6 +43,7 @@ export class AppComponent {
       this.isFetching = false;
       this.loadedPosts = posts;
     }, error => {
+      this.isFetching = false;
       this.error = error.message;
     });
   }
@@ -48,4 +54,11 @@ export class AppComponent {
     });
   }
 
+  onHandleClick() {
+    this.error = null;
+  }
+
+  ngOnDestroy(): void {
+    this.errorSub?.unsubscribe();
+  }
 }
