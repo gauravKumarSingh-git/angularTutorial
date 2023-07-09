@@ -63,6 +63,7 @@ export class PostsService {
         'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
         {
           observe: 'events',
+          responseType: 'text'
         }
       )
       .pipe(
