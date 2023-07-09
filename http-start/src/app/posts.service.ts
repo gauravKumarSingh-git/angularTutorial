@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Subject, throwError } from 'rxjs';
+import { catchError, map, Subject, tap, throwError } from 'rxjs';
 import { Post } from './post.model';
 
 @Injectable({
@@ -16,7 +16,10 @@ export class PostsService {
     this.http
       .post(
         'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
-        postData
+        postData,
+        {
+          observe: 'response',
+        }
       )
       .subscribe(
         (responseData) => {
@@ -34,7 +37,7 @@ export class PostsService {
         'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
         {
           headers: new HttpHeaders({ 'Custom-Header': 'Hello' }),
-          params: new HttpParams().set('print', 'petty')
+          params: new HttpParams().set('print', 'petty'),
         }
       )
       .pipe(
@@ -55,8 +58,23 @@ export class PostsService {
   }
 
   clearPosts() {
-    return this.http.delete(
-      'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json'
-    );
+    return this.http
+      .delete(
+        'https://http-demo-b364c-default-rtdb.firebaseio.com/posts.json',
+        {
+          observe: 'events',
+        }
+      )
+      .pipe(
+        tap((event) => {
+          console.log(event);
+          if(event.type === HttpEventType.Sent){
+            //..
+          }
+          if(event.type === HttpEventType.Response){
+            console.log(event.body);
+          }
+        })
+      );
   }
 }
